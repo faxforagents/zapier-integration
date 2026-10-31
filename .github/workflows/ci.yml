@@ -1,0 +1,41 @@
+name: ci
+
+# Provenance: faxforagents/mcp .github/workflows/ci.yml (2026-10-31), actions pinned by SHA.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  truthcheck:
+    name: truth pins
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - run: sh scripts/truthcheck.sh
+
+  test:
+    name: the definition validates and the unit tests pass on node 22
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm test
+      - name: The definition passes the Zapier schema (local checks, no Zapier account needed)
+        run: npx -y zapier-platform-cli@19.3.0 validate --without-style
+      - run: npm audit --audit-level=low
+      - name: The only runtime dependency is zapier-platform-core
+        run: node -e "const p=require('./package.json'); const d=Object.keys(p.dependencies||{}); if (d.join()!=='zapier-platform-core') { console.error('unexpected runtime dependencies', d); process.exit(1) }"

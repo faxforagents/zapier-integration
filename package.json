@@ -1,0 +1,39 @@
+{
+  "name": "faxforagents-zapier",
+  "version": "1.0.0",
+  "description": "Zapier integration for Fax for Agents: send a fax, find a fax, and trigger on received or delivered faxes through the Fax for Agents API.",
+  "license": "MIT",
+  "homepage": "https://faxforagents.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/faxforagents/zapier-integration.git"
+  },
+  "bugs": {
+    "url": "https://github.com/faxforagents/zapier-integration/issues"
+  },
+  "keywords": [
+    "zapier",
+    "fax",
+    "fax-api",
+    "ai-agents",
+    "faxforagents"
+  ],
+  "author": {
+    "name": "Fax for Agents",
+    "email": "hello@faxforagents.com"
+  },
+  "main": "index.js",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "zapier-platform-core": "19.3.0"
+  },
+  "devDependencies": {
+    "nock": "^13.5.6"
+  }
+}
