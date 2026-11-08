@@ -1,7 +1,8 @@
 'use strict';
 
 // Shared fixtures: the recorded API shapes, the same ids as the sibling integrations' fakes.
-const nock = require('nock');
+// nock 15 is an ES module. require() hands back its namespace, the function sits on default.
+const nock = require('nock').default;
 const zapier = require('zapier-platform-core');
 const App = require('../index');
 
